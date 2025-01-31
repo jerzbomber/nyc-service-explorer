@@ -12,7 +12,7 @@ This is a simple **Next.js** application that allows users to explore various se
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-repo/nyc-service-explorer.git
+   git clone https://github.com/jerzbomber/nyc-service-explorer.git
    cd nyc-service-explorer
    ```
 
