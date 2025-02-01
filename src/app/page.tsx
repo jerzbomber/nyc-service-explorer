@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
 import List from "@/components/List";
-import Map from "@/components/Map";
 import Filter from "@/components/Filter";
 import fetchData from "@/utils/fetchData";
 import removeSpacesAndCapitalize from "@/utils/removeSpacesAndCapitalize";
+
+const Map = dynamic(() => import("@/components/Map"), { ssr: false });
 
 // Borough coordinates for map centering
 const boroughCoordinates = {
@@ -30,9 +33,10 @@ const Home = () => {
   const [data, setData] = useState<Record[]>([]);
   const [filteredData, setFilteredData] = useState<Record[]>([]);
   const [borough, setBorough] = useState<string>("");
-  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number }>(
-    boroughCoordinates.Manhattan
-  ); // Default to Manhattan
+  const [mapCenter, setMapCenter] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -48,11 +52,11 @@ const Home = () => {
       const filteredData = data.filter((record) => record.borough === borough);
       setFilteredData(filteredData);
       // Update the map center when borough changes
-      const nornalizedBorough = removeSpacesAndCapitalize(borough);
+      const normalizedBorough = removeSpacesAndCapitalize(borough.trim()); // Ensure it's properly formatted
       const newCenter =
         boroughCoordinates[
-          nornalizedBorough as keyof typeof boroughCoordinates
-        ] || boroughCoordinates.Manhattan;
+          normalizedBorough as keyof typeof boroughCoordinates
+        ] ?? boroughCoordinates.Manhattan;
       setMapCenter(newCenter);
     } else {
       setFilteredData(data);
@@ -66,7 +70,7 @@ const Home = () => {
       <Filter setBorough={setBorough} />
       <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <List data={filteredData} />
-        <Map data={filteredData} mapCenter={mapCenter} />
+        {mapCenter && <Map data={filteredData} mapCenter={mapCenter} />}
       </div>
     </div>
   );
