@@ -24,7 +24,15 @@ This is a simple **Next.js** application that allows users to explore various se
    yarn install
    ```
 
-3. Start the development server:
+3. Set Up Environment Variables
+
+   Create a `.env.local` file in the root directory and add the following:
+
+   ```env
+   NEXT_PUBLIC_API_URL=https://data.cityofnewyork.us/resource/8nqg-ia7v.json
+   ```
+
+4. Start the development server:
 
    ```bash
    npm run dev
@@ -32,7 +40,7 @@ This is a simple **Next.js** application that allows users to explore various se
    yarn dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Deployment
 
